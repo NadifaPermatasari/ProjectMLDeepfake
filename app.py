@@ -18,17 +18,16 @@ def detect_deepfake(image):
     interpreter.set_tensor(input_details[0]['index'], image)
     interpreter.invoke()
     output = interpreter.get_tensor(output_details[0]['index'])
-
     return "🟥 Deepfake" if output[0][0] > 0.5 else "🟩 Real"
 
 # Streamlit UI
 st.set_page_config(page_title="Deepfake Detector")
 st.title("🕵️‍♂️ Deepfake Image Detector")
-uploaded_file = st.file_uploader("Upload image...", type=["jpg", "jpeg", "png"])
 
+uploaded_file = st.file_uploader("Upload image...", type=["jpg", "jpeg", "png"])
 if uploaded_file:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_column_width=True)
     result = detect_deepfake(image)
-    st.subheader("Result:")
+    st.subheader("Prediction Result")
     st.success(result)
